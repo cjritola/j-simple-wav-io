@@ -1,4 +1,4 @@
-package com.ritolaaudio.simplewavio.files.riff.wave;
+package com.ritolaaudio.simplewavio.files.riff;
 /**
 SimpleWAVIO - A straightforward library for loading and saving .WAV (RIFF) files as numerical arrays.
 Copyright (C) 2012  Chuck Ritola
@@ -16,53 +16,59 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
 
 import com.ritolaaudio.simplewavio.files.RiffChunk;
 
-public class RiffChunk_data extends RiffChunk
+/**
+ * Whatcha gonna do with all that JUNK, all that JUNK inside your chunk?
+ * The JUNK chunk is typically non-data i.e. all-zeroes, used for block alignment in some files, like with 2048 blocksize in CDs.
+ * In case it is not empty, its contents can be read. Who knows what fun little goodies could be in there...
+ * @author chuck
+ *
+ */
+
+public class RiffChunk_JUNK extends RiffChunk
 	{
-	byte [] rawData;
+	byte [] junkData;
+	
 	@Override
 	public void fromData(ByteBuffer fileBuffer)
 		{
-		long audioDataSizeInBytes=readUnsignedInt(fileBuffer);
-		System.out.println("audio data size in bytes: "+audioDataSizeInBytes);
-		rawData = new byte[(int)audioDataSizeInBytes];
-		fileBuffer.get(rawData);
-		}//end initialize(...)
-	
+		int length = (int)RiffChunk.readUnsignedInt(fileBuffer);
+		junkData = new byte[length];
+		fileBuffer.get(junkData);
+		}
+
 	@Override
 	public void _toData(ByteBuffer buffer)
 		{
-		buffer.putInt(rawData.length);
-		try{buffer.put(rawData);}
-		catch(BufferOverflowException e)
-			{
-			e.printStackTrace();
-			System.out.println("tried to put "+rawData.length+" into buffer of remaining "+buffer.remaining());
-			}
-		}//end _toData
+		buffer.putInt(junkData.length);
+		buffer.put(junkData);
+		}
+
 	@Override
 	public int _sizeEstimateInBytes()
 		{
-		return 4+rawData.length;//data size indicator plus data
+		return 4+junkData.length;
 		}
-	
+
 	/**
-	 * @return the rawData
+	 * JUNK data should be non-data but it doesn't have to be.
+	 * @return the junkData
 	 */
-	public byte[] getRawData()
+	public byte[] getJunkData()
 		{
-		return rawData;
+		return junkData;
 		}
+
 	/**
-	 * @param rawData the rawData to set
+	 * JUNK data should be non-data but it doesn't have to be.
+	 * @param junkData the junkData to set
 	 */
-	public void setRawData(byte[] rawData)
+	public void setJunkData(byte[] junkData)
 		{
-		this.rawData = rawData;
-		System.out.println("Set raw data to an array of length "+rawData.length);
+		this.junkData = junkData;
 		}
-	}//end RiffChunk_data
+
+	}//end RiffChunk_JUNK

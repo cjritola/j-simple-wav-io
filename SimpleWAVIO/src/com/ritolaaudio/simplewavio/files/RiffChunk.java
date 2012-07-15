@@ -35,8 +35,20 @@ import com.sun.org.apache.bcel.internal.classfile.Unknown;
  */
 public abstract class RiffChunk implements Comparable<RiffChunk>
 	{
+	/**
+	 * Simple utility byte array to avoid re-creating byte arrays.<br>
+	 * <b>Warning:</b> Not thread-safe.
+	 */
 	protected static byte [] workChunk4 = new byte[4];
+	/**
+	 * Simple utility byte array to avoid re-creating byte arrays.<br>
+	 * <b>Warning:</b> Not thread-safe.
+	 */
 	protected static byte [] anotherWorkChunk4 = new byte[4];
+	/**
+	 * Simple utility byte array to avoid re-creating byte arrays.<br>
+	 * <b>Warning:</b> Not thread-safe.
+	 */
 	protected static byte [] workChunk2 = new byte[2];
 	
 	protected HashMap<Class,RiffChunk> childMap = new HashMap<Class,RiffChunk>();
@@ -63,10 +75,10 @@ public abstract class RiffChunk implements Comparable<RiffChunk>
 			parentTagSeparator="";
 			}
 		
-		System.out.println("Parent tag: "+parentTag);
-		System.out.println("package: "+packageName);
+		//System.out.println("Parent tag: "+parentTag);
+		//System.out.println("package: "+packageName);
 		LinkedList<RiffChunk>subChunks = new LinkedList<RiffChunk>();
-		System.out.println("position: "+fileBuffer.position());
+		//System.out.println("position: "+fileBuffer.position());
 		while(fileBuffer.position()<fileBuffer.capacity())
 			{
 			//Read first 4 bytes
@@ -74,7 +86,7 @@ public abstract class RiffChunk implements Comparable<RiffChunk>
 			String tag = new String(workChunk4);
 			tag=tag.replace(' ', '_');//Replace spaces in tags with underscore
 			//Convert tag sequence to String
-			System.out.println("tag:"+tag);
+			//System.out.println("tag:"+tag);
 			final String className=packageName+parentTagSeparator+parentTag.toLowerCase()+".RiffChunk_"+tag;
 			try
 				{
@@ -93,12 +105,12 @@ public abstract class RiffChunk implements Comparable<RiffChunk>
 			catch(IllegalAccessException e){e.printStackTrace();}//TODO Better
 			catch(InstantiationException e){e.printStackTrace();}//TODO Better
 			}
-		System.out.println("RiffChunk.ParseRiff returning...");
+		//System.out.println("RiffChunk.ParseRiff returning...");
 		return subChunks;
 		}//end RiffChunk
 	
 	/**
-	 * Parse the given buffer (minding its position) and build this RIFF chunk and fild its child chunk hierarchy.<br>
+	 * Parse the given buffer (minding its position) and build this RIFF chunk and field its child chunk hierarchy.<br>
 	 * @param fileBuffer	The buffer containing the raw RIFF data.
 	 * @since Jul 15, 2012
 	 */
@@ -162,7 +174,7 @@ public abstract class RiffChunk implements Comparable<RiffChunk>
 		//Write the RIFF name
 		String className=this.getClass().getSimpleName();
 		String RIFFName = className.substring(className.length()-4).replace('_', ' ');
-		System.out.println("Writing RIFF tag to buffer: "+RIFFName);
+		//System.out.println("Writing RIFF tag to buffer: "+RIFFName);
 		try{if(!RIFFName.contentEquals("Root") && !className.contentEquals("Unrecognized"))buffer.put(RIFFName.getBytes());}
 		catch(BufferOverflowException e){throw new RuntimeException("Buffer Overflow Exception while pushing RIFF name into buffer of size "+buffer.capacity());}
 		_toData(buffer);
@@ -170,7 +182,7 @@ public abstract class RiffChunk implements Comparable<RiffChunk>
 		}
 	protected void childrenToData(ByteBuffer buffer)
 		{
-		System.out.println(this.getClass().getName()+".childrenToData()");
+		//System.out.println(this.getClass().getName()+".childrenToData()");
 		List<RiffChunk>children = new ArrayList<RiffChunk>(childMap.values());
 		Collections.sort(children);
 		for(RiffChunk child:children)
@@ -208,7 +220,7 @@ public abstract class RiffChunk implements Comparable<RiffChunk>
 	 */
 	public void printChildChunks()
 		{
-		System.out.println(this.getClass()+".printChildChunks():");
+		//System.out.println(this.getClass()+".printChildChunks():");
 		if(childMap.isEmpty())System.out.println("	(No child chunks in this object)");
 		for(RiffChunk c:childMap.values())
 			{System.out.println("		"+c.getClass().getName());}

@@ -41,6 +41,11 @@ import com.ritolaaudio.simplewavio.files.riff.RiffChunk_WAVE;
 import com.ritolaaudio.simplewavio.files.riff.wave.RiffChunk_data;
 import com.ritolaaudio.simplewavio.files.riff.wave.RiffChunk_fmt_;
 
+/**
+ * General utilities for reading and writing WAV (RIFF) files.
+ * @author chuck
+ *
+ */
 public class Utils
 	{
 	
@@ -84,6 +89,8 @@ public class Utils
 		catch(IOException e){if(e.getMessage().contains("dead")){throw new RuntimeException("PipedInputStream's read end is dead. This is a bizarre, known bug. Wait a few minutes and try again.");}else{throw new RuntimeException("PipedOutputStream  threw an IOException: "+e.getMessage());}}
 		}//end floatsToWAV(...)
 	*/
+	
+/*	
 	public static final byte[] toByteArray(int value,int numBytes)
 		{
 		byte [] result = new byte[numBytes];
@@ -93,7 +100,15 @@ public class Utils
 			}
 		return result;
 		}//end toByteArray(...)
-
+*/
+	/**
+	 * Converts a signed int into an array of bytes and writes it to a byte array t the given offset.
+	 * @param value		The integral value to byte-ify.
+	 * @param numBytes	The number of bytes desired to describe this value (up to 4)
+	 * @param dest		The byte array to which to write said bytes.
+	 * @param off		The offset index within said byte array from which to start writing said bytes.
+	 * @since Jul 14, 2012
+	 */
 	public static final void toByteArray(int value,int numBytes, byte [] dest, int off)
 		{
 		for(int i=0; i<numBytes; i++)
@@ -101,6 +116,7 @@ public class Utils
 			dest[i+off]=(byte)(value >>> ((i+2)*8) & 0xff);
 			}
 		}//end toByteArray(...)
+		
 	/*
 	public static final void toByteArray(int value,int numBytes, byte [] dest, int off)
 		{
@@ -158,6 +174,13 @@ public class Utils
 		return result;
 		}//end WAVToFloats(...)
 	*/
+	
+	/**
+	 * Reverse the order of a byte array and write that reordered array to the given output. Intra-byte bit order is unchanged.
+	 * @param original	input array to reverse (does not get changed)
+	 * @param output	output array for results of byte order reversal.
+	 * @since Jul 14, 2012
+	 */
 	public static final void flipEndian(byte [] original, byte [] output)
 		{
 		for(int i=0; i<original.length; i++)

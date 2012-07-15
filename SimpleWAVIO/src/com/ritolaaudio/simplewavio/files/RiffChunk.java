@@ -27,8 +27,9 @@ import java.util.List;
 import com.sun.org.apache.bcel.internal.classfile.Unknown;
 
 /**
- * General form of a RIFF chunk, the standard block of data contained within a RIFF file.
- * Also contains utilities for parsing and writing RIFF chunks, which may be moved at a later date for neatness.
+ * General form of a RIFF chunk, the standard block of data contained within a RIFF file.<br>
+ * Also contains utilities for parsing and writing RIFF chunks, which may be moved at a later date for neatness.<br>
+ * <br><img src="RiffChunkParsing.png"/>
  * @author chuck
  *
  */
@@ -97,7 +98,7 @@ public abstract class RiffChunk implements Comparable<RiffChunk>
 		}//end RiffChunk
 	
 	/**
-	 * Parse the given buffer (minding its position) and build this RIFF chunk and fild its child chunk hierarchy.
+	 * Parse the given buffer (minding its position) and build this RIFF chunk and fild its child chunk hierarchy.<br>
 	 * @param fileBuffer	The buffer containing the raw RIFF data.
 	 * @since Jul 15, 2012
 	 */
@@ -177,14 +178,14 @@ public abstract class RiffChunk implements Comparable<RiffChunk>
 		}//end childrenToData()
 	
 	/**
-	 * DO NOT INVOKE OUTSIDE RIFFCHUNK OBJECTS
+	 * DO NOT INVOKE OUTSIDE RIFFCHUNK OBJECTS<br>
 	 * Called internally when pre-calculating the size of a RIFF file. This portion is developer-specified.
 	 * @return
 	 * @since Jul 15, 2012
 	 */
 	public abstract int _sizeEstimateInBytes();
 	/**
-	 * Called externally and recursively when pre-calculating the size of a RIFF file.
+	 * Called externally and recursively when pre-calculating the size of a RIFF file.<br>
 	 * @return	The cumulative size estimate of all child chunks and their children, etc. plus the size of this chunk+4 for the RIFF nametag (i.e. RIFF, WAVE, fmt, etc).
 	 * @since Jul 15, 2012
 	 */

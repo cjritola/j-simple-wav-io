@@ -21,8 +21,8 @@ import java.nio.ByteBuffer;
 import com.ritolaaudio.simplewavio.files.RiffChunk;
 
 /**
- * Whatcha gonna do with all that JUNK, all that JUNK inside your chunk?
- * The JUNK chunk is typically non-data i.e. all-zeroes, used for block alignment in some files, like with 2048 blocksize in CDs.
+ * Whatcha gonna do with all that JUNK, all that JUNK inside your chunk?<br>
+ * The JUNK chunk is typically non-data i.e. all-zeroes, used for block alignment in some files, like with 2048 blocksize in CDs.<br>
  * In case it is not empty, its contents can be read. Who knows what fun little goodies could be in there...
  * @author chuck
  *

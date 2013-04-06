@@ -86,7 +86,7 @@ public abstract class RiffChunk implements Comparable<RiffChunk>
 			String tag = new String(workChunk4);
 			tag=tag.replace(' ', '_');//Replace spaces in tags with underscore
 			//Convert tag sequence to String
-			//System.out.println("tag:"+tag);
+			System.out.println("Looking for class to match tag: '"+tag+"'");
 			final String className=packageName+parentTagSeparator+parentTag.toLowerCase()+".RiffChunk_"+tag;
 			try
 				{
@@ -97,7 +97,9 @@ public abstract class RiffChunk implements Comparable<RiffChunk>
 				subChunks.add(decoder);
 				}
 			catch(ClassNotFoundException e)
-				{System.out.println("Failed to find class to decode riff tag: "+tag);System.out.println("was looking for "+className+".\nInserting 'Unrecognized' placeholder.");
+				{System.out.println("Failed to find class to decode riff tag: '"+tag+"'");
+				System.out.println("was looking for '"+className+"'.\nInserting 'Unrecognized' placeholder.");
+				System.out.println("Byte position is "+Integer.toHexString(fileBuffer.position()-4));
 				RiffChunk unknown = new Unrecognized();
 				unknown.fromData(fileBuffer);
 				subChunks.add(unknown);
@@ -174,6 +176,7 @@ public abstract class RiffChunk implements Comparable<RiffChunk>
 		//Write the RIFF name
 		String className=this.getClass().getSimpleName();
 		String RIFFName = className.substring(className.length()-4).replace('_', ' ');
+		System.out.println("RiffChunk.toData Wrote RIFF name: "+RIFFName);
 		//System.out.println("Writing RIFF tag to buffer: "+RIFFName);
 		try{if(!RIFFName.contentEquals("Root") && !className.contentEquals("Unrecognized"))buffer.put(RIFFName.getBytes());}
 		catch(BufferOverflowException e){throw new RuntimeException("Buffer Overflow Exception while pushing RIFF name into buffer of size "+buffer.capacity());}

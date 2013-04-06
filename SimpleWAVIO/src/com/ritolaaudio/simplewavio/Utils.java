@@ -223,7 +223,7 @@ public class Utils
 		fmtChunk.setAudioChannelCount(buffer[0].length);
 		fmtChunk.setAudioFormatCode(1);// 1 for PCM
 		fmtChunk.setBitsPerSample(16);
-		fmtChunk.setBlockAlign(4);
+		fmtChunk.setBlockAlign(2*buffer[0].length);
 		fmtChunk.setByteRate((long)sampleRate*2*fmtChunk.getAudioChannelCount());
 		fmtChunk.setSampleRate((long)sampleRate);
 		fmtChunk.setSize(16);// 16 for PCM

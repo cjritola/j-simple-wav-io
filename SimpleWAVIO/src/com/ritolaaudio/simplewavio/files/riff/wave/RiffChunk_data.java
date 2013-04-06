@@ -47,7 +47,7 @@ public class RiffChunk_data extends RiffChunk
 	@Override
 	public int _sizeEstimateInBytes()
 		{
-		return 4+rawData.length;//data size indicator plus data
+		return /*4+*/rawData.length;//data size indicator plus data
 		}
 	
 	/**
